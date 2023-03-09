@@ -7,22 +7,35 @@ const apiFix = "https://proxy.cors.sh/"
 const testGame = "Last Epoch" // Last Epoch App ID: 899770, current patch: 0.8.5
 const testIds = ["appid: 899770, name: Last Epoch", "appid: 238960, name: Path of Exile", "appid: 1245620, name: Elden Ring"]
 
+const contentEl = document.querySelector("#content")
+
 async function callSteamNewsAPI() {
     let result = await fetch(apiFix + steamAPIUrl + steamAppIDTerm + "899770" + steamAPITagTerm)
-    // let result = await fetch(testUrl)
-    .then(function (response) {
-        return response.json();
-    })
-    .then(function (data) {
-        console.log(data);
-        let patchData = data.newsitems[0]
-        renderGameInfo(patchData.title, patchData.contents, patchData.url);
-    })
+        // let result = await fetch(testUrl)
+        .then(function (response) {
+            return response.json();
+        })
+        .then(function (data) {
+            console.log(data);
+            let patchData = data.newsitems[0]
+            renderGameInfo(patchData.title, patchData.contents, patchData.url);
+        })
 }
 /* content -> container -> game info */
 function renderGameInfo(title, contents, url) {
     /* TODO: render fucntion inputs to HTML page */
+    var containerEl = document.createElement('div');
+    var patchEl = document.createElement('div');
+    patchEl.className = "patch-data"
+    patchEl.setAttribute("id", "patch-data")
+    patchEl.textContent = contents
+    containerEl.append(patchEl)
+console.log(title,url)
 }
 
+var testContent = "random"
+var testTitle= "random"
+var testUrl = "random3"
+renderGameInfo(testContent,test)
 // callAppIdApi();
 callSteamNewsAPI();
