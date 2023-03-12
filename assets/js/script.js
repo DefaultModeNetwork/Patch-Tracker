@@ -9,7 +9,9 @@ const contentEl = document.querySelector("#content");
 var inputEl = document.querySelector("#user-input");
 
 async function callSteamNewsAPI(inputAppid) {
-    let result = await fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
+    const video = await callYoutubeAPI()
+    console.log(video)
+    fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
         // let result = await fetch(testUrl)
         .then(function (response) {
             return response.json();
@@ -17,7 +19,7 @@ async function callSteamNewsAPI(inputAppid) {
         .then(function (data) {
             console.log(data);
             let patchData = data.appnews.newsitems[0]
-            renderGameInfo(patchData.title, patchData.contents, patchData.url);
+            renderGameInfo(patchData.title, patchData.contents, patchData.url, video);
         })
 }
 
@@ -25,11 +27,11 @@ const renderVideo = (json) => {
     const items = json.items[0]
     const videoId = items.id.videoId || items.id.channelId || ''
   console.log(json,videoId,items)
-   const frame = `<iframe width="560" height="315" src="https://www.youtube.com/embed/${videoId}?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
+   return `<iframe width="280" height="160" src="https://www.youtube.com/embed/${videoId}?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
   clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
     
-  const wrapper = document.getElementById('youtube-wrapper')
-  wrapper.innerHTML = frame
+//   const wrapper = document.getElementById('youtube-wrapper')
+//   wrapper.innerHTML = frame
   
   }
   
@@ -40,7 +42,7 @@ async function callYoutubeAPI() {
     const key = 'AIzaSyBhm51niYzxBdPH_lm8AqoIAyIv74eQF4M'
 	const url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&'
     
-    fetch(`${url}q=${gameName}&key=${key}`).then((res) => res.json()).then(json => renderVideo(json)) //only calls video if fetch works
+    return await fetch(`${url}q=${gameName}&key=${key}`).then((res) => res.json()).then(json => renderVideo(json)) //only calls video if fetch works
 }
 
 
@@ -52,14 +54,16 @@ async function callYoutubeAPI() {
 /* content -> container -> game info 
     TODO: Change url to be a component of the the patchEl
 */
-function renderGameInfo(title, contents, url, getYoutubeVideo) {
+function renderGameInfo(title, contents, url, video) {
     /* TODO: render fucntion inputs to HTML page */
     var containerEl = document.createElement('div');
     containerEl.className="result" //results on page format with css
     var patchEl = document.createElement('div');
     patchEl.className = "patch-data"
     patchEl.setAttribute("id", "patch-data")
-    patchEl.textContent = contents
+    var converter = new showdown.Converter();
+    var html = converter.makeHtml(contents);
+    patchEl.innerHTML = html
    
     var titleEl = document.createElement('div');
     titleEl.className = "patch-title"; // bold result title
@@ -67,11 +71,17 @@ function renderGameInfo(title, contents, url, getYoutubeVideo) {
 
     var urlEl = document.createElement('div');
     urlEl.setAttribute("id", "patch-data");
-    urlEl.textContent = url //this line will need to change as this won't add the link correctly
+    urlEl.innerHTML = "<a href=" + url + " target='_blank' >" + url + "</a>" //open patch notes url in new tab
 
     containerEl.append(titleEl);
     containerEl.append(urlEl); // not the final version of how url will be added
+  
+    
     containerEl.append(patchEl); //here is where we add to the container, all the components
+    var frameEl = document.createElement("div")
+    frameEl.className = "frame-wrapper"
+    frameEl.innerHTML = video
+    containerEl.append(frameEl)
     //add those componenets somwewhere on the page.
     contentEl.append(containerEl);
     console.log(title,url)

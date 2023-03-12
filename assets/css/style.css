@@ -3,6 +3,7 @@ body {
     height: 100%;
     background-image: linear-gradient(45deg, #f2711c, transparent);
     font-family: 'Sono', sans-serif;
+    min-height: 100vh;
 }
 
 .result {
@@ -16,6 +17,13 @@ body {
     font-size: 23px;
 }
 
-#youtube-wrapper {
-    padding: 12px;
+.frame-wrapper {
+    padding: 4px;
+    margin: 4px;
+    border: 1px solid grey;
+    width: max-content;
+}
+
+a {
+    overflow-wrap: anywhere;
 }
