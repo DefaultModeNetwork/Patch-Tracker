@@ -1,0 +1,21 @@
+body {
+    padding: 12px;
+    height: 100%;
+    background-image: linear-gradient(45deg, #f2711c, transparent);
+    font-family: 'Sono', sans-serif;
+}
+
+.result {
+    padding: 8px;
+    border: 1px solid lightgrey;
+    margin-top: 12px;
+    border-radius: 8px;
+}
+
+.patch-title {
+    font-size: 23px;
+}
+
+#youtube-wrapper {
+    padding: 12px;
+}
