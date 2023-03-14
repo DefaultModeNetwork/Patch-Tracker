@@ -105,8 +105,9 @@ function binarySearch(target, start, end) {
 }
 
 
-async function getAppid(userInput) {
-    let userString = await userInput.replace(/ /g,"");
+function getAppid() {
+    let userString = document.getElementById("game-name").value;
+    userString = userString.replace(/ /g,"");
     userString = userString.toLowerCase();
     console.log(userString)
     let result = binarySearch(userString, 0, (gameKeys.length - 1))
@@ -125,8 +126,10 @@ function loadFromStorage() {
 
 function userSearch(event) {
     event.preventDefault();
-    // console.log(inputEl.value)
-    let id = getAppid(inputEl.value)
+    // console.log("input el:", inputEl.value)
+
+    let id = getAppid();
+    // console.log(id)
     callSteamNewsAPI(id);
     callYoutubeAPI()
 }
