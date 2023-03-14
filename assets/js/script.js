@@ -16,8 +16,8 @@ async function callSteamNewsAPI(inputAppid, storedName) {
     } else {
         gameName = document.getElementById("game-name").value
     }
-    let video = await callYoutubeAPI(gameName)
-    console.log(video)
+    // let video = await callYoutubeAPI(gameName)
+    // console.log(video)
     let result = await fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
         .then(function (response) {
             return response.json();
@@ -25,7 +25,8 @@ async function callSteamNewsAPI(inputAppid, storedName) {
         .then(function (data) {
             console.log(data);
             let patchData = data.appnews.newsitems[0]
-            renderGameInfo(patchData.title, patchData.contents, patchData.url, video);
+            // renderGameInfo(patchData.title, patchData.contents, patchData.url, video);
+            renderGameInfo(patchData.title, patchData.contents, patchData.url);
         })
 }
 
@@ -54,7 +55,23 @@ async function callYoutubeAPI(storedName) {
     return await fetch(`${url}q=${gameName}&key=${key}`).then((res) => res.json()).then(json => renderVideo(json)) //only calls video if fetch works
 }
 //needs to call the youtube api with a q value of gameName + patchName
+function cleanSteamTags(contentString) {
+    let cleanString = contentString
+    cleanString = cleanString.replace(/(\[(.*?)\])+/g,'')
+    console.log(cleanString);
+}
 
+function parsePatchNumber(patchTitle) {
+    console.log(patchTitle)
+    let patchNum = patchTitle.match(/(\d.*\d)+/g)
+    if (patchNum != null) {
+        console.log(patchNum[0])
+        return patchNum[0]
+    } else {
+        return patchTitle
+    }
+    // return patchTitle.match(/(\d.*\d)+/g)[0]
+}
 /* content -> container -> game info 
     TODO: Change url to be a component of the the patchEl
 */
@@ -69,6 +86,9 @@ function renderGameInfo(title, contents, url, video) {
     var html = converter.makeHtml(contents);
     patchEl.innerHTML = html
    
+    cleanSteamTags(contents)
+    parsePatchNumber(title)
+
     var titleEl = document.createElement('div');
     titleEl.className = "patch-title"; // bold result title
     titleEl.textContent = title;
@@ -79,7 +99,6 @@ function renderGameInfo(title, contents, url, video) {
 
     containerEl.append(titleEl);
     containerEl.append(urlEl); // not the final version of how url will be added
-  
     containerEl.append(patchEl); //here is where we add to the container, all the components
     var frameEl = document.createElement("div")
     frameEl.className = "frame-wrapper"
