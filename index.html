@@ -5,24 +5,33 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="./assets/css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/purecss@3.0.0/build/pure-min.css" integrity="sha384-X38yfunGUhNzHpBaEBsWLO+A0HDYOQi8ufWDkZ0k9e0eXz/tH3II7uKZ9msv++Ls" crossorigin="anonymous">
     <title>Patch-Tracker</title>
 </head>
 
 <body>
-
 <header>
     <h1>Welcome to Patch Tracker!</h1>
     <h2>Find the latest patch for your games here!</h2>
     <nav>
-<input type="text" placeholder="Type the name of a game"> <button type="button">Search</button>
+        <form id="user-input">
+            <input id="user-input" type="text" placeholder="Type the name of a game"></input>
+            <button>Search</button>
+        </form>
+
     </nav>
 </header>
-<div id="content" class="container">
-    <div id="patch-data" class="patch-data" ></div>
-    <div id="container" class="container"></div>
-</div>
+<div>
+
+    <div id="content">
+        <!-- Area filled by script -->
+    </div>
+
+</div> 
 
 <script src="./assets/js/script.js"></script>
+<script src="./assets/js/two.script.js"></script>
+<script src="https://apis.google.com/js/api.js"></script>
 
 
 </body>
