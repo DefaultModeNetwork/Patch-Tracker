@@ -1,0 +1,29 @@
+body {
+    padding: 12px;
+    height: 100%;
+    background-image: linear-gradient(45deg, #f2711c, transparent);
+    font-family: 'Sono', sans-serif;
+    min-height: 100vh;
+}
+
+.result {
+    padding: 8px;
+    border: 1px solid lightgrey;
+    margin-top: 12px;
+    border-radius: 8px;
+}
+
+.patch-title {
+    font-size: 23px;
+}
+
+.frame-wrapper {
+    padding: 4px;
+    margin: 4px;
+    border: 1px solid grey;
+    width: max-content;
+}
+
+a {
+    overflow-wrap: anywhere;
+}
