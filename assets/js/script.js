@@ -9,8 +9,14 @@ var gameName = document.getElementById("game-name").value
 
 console.log(gameKeys)
 
-async function callSteamNewsAPI(inputAppid) {
-    let video = await callYoutubeAPI()
+async function callSteamNewsAPI(inputAppid, storedName) {
+    let gameName = ""
+    if (storedName) { //allow for localStorage calls to overright the .value which is probably null anyway
+        gameName = storedName;
+    } else {
+        gameName = document.getElementById("game-name").value
+    }
+    let video = await callYoutubeAPI(gameName)
     console.log(video)
     let result = await fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
         .then(function (response) {
@@ -24,19 +30,23 @@ async function callSteamNewsAPI(inputAppid) {
 }
 
     const renderVideo = (json) => {
-    const items = json.items[0]
-    const videoId = items.id.videoId || items.id.channelId || ''
-    console.log(json,videoId,items)
-    return `<iframe width="280" height="160" src="https://www.youtube.com/embed/${videoId}?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
-    clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
-
+        const items = json.items[0]
+        const videoId = items.id.videoId || items.id.channelId || ''
+        console.log(json,videoId,items)
+        return `<iframe width="280" height="160" src="https://www.youtube.com/embed/${videoId}?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
+        clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
     //   const wrapper = document.getElementById('youtube-wrapper')
     //   wrapper.innerHTML = frame  
     }
 
-/* Waiting for Youtube API */
-async function callYoutubeAPI() {
-    var gameName = document.getElementById("game-name").value
+/* Waiting for Youtube API, added storedName field for localStorage based calls. */
+async function callYoutubeAPI(storedName) {
+    let gameName = ""
+    if (storedName) { //allow for localStorage calls to overright the .value which is probably null anyway
+        gameName = storedName;
+    } else {
+        gameName = document.getElementById("game-name").value
+    }
     console.log(gameName)
     const key = 'AIzaSyBhm51niYzxBdPH_lm8AqoIAyIv74eQF4M'
 	const url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&'
@@ -105,34 +115,41 @@ function binarySearch(target, start, end) {
 }
 
 
-async function getAppid(userInput) {
-    let userString = await userInput.replace(/ /g,"");
+function getAppid() {
+    let userString = document.getElementById("game-name").value;
+    userString = userString.replace(/ /g,"");
     userString = userString.toLowerCase();
     console.log(userString)
     let result = binarySearch(userString, 0, (gameKeys.length - 1))
+    storeAppid(result.appid);
     return result.appid;
 }
 
-function storeAppid(gameName, gameAppid) {
-    localStorage.setItem(gameName, gameAppid);
+function storeAppid(gameAppid) {
+    localStorage.setItem(document.getElementById("game-name").value, gameAppid);
 }
 
 function loadFromStorage() {
     for (var i = 0; i < localStorage.length; i++) {
-        callSteamNewsAPI(localStorage.getItem(i)); // calls the API for every appID currently in local storage.
+        // callSteamNewsAPI(localStorage.getItem(i)); // calls the API for every appID currently in local storage.
+        let name = localStorage.key(i);
+        let appid = localStorage.getItem(localStorage.key(i));
+        console.log(name, appid);
+        callSteamNewsAPI(appid, name)
+        // callYoutubeAPI(name);
     }
 }
 
 function userSearch(event) {
     event.preventDefault();
-    // console.log(inputEl.value)
-    let id = getAppid(inputEl.value)
+    let id = getAppid();
     callSteamNewsAPI(id);
-    callYoutubeAPI()
+    // callYoutubeAPI()
 }
 
-// loadFromStorage() uncomment this when localStorage is set up
+loadFromStorage(); //fire when page loads the first time.
 inputEl.addEventListener("submit", userSearch)
+
 const toggleBtn = document.querySelector('.toggle-btn');
 const body = document.querySelector('body');
 let isBackgroundGif = false;
