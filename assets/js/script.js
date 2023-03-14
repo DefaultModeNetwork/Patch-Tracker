@@ -59,6 +59,7 @@ function cleanSteamTags(contentString) {
     let cleanString = contentString
     cleanString = cleanString.replace(/(\[(.*?)\])+/g,'')
     console.log(cleanString);
+    return cleanString;
 }
 
 function parsePatchNumber(patchTitle) {
@@ -70,7 +71,6 @@ function parsePatchNumber(patchTitle) {
     } else {
         return patchTitle
     }
-    // return patchTitle.match(/(\d.*\d)+/g)[0]
 }
 /* content -> container -> game info 
     TODO: Change url to be a component of the the patchEl
@@ -86,16 +86,16 @@ function renderGameInfo(title, contents, url, video) {
     var html = converter.makeHtml(contents);
     patchEl.innerHTML = html
    
-    cleanSteamTags(contents)
+    
     parsePatchNumber(title)
 
     var titleEl = document.createElement('div');
     titleEl.className = "patch-title"; // bold result title
-    titleEl.textContent = title;
+    titleEl.textContent = cleanSteamTags(contents);
 
     var urlEl = document.createElement('div');
     urlEl.setAttribute("id", "patch-data");
-    urlEl.innerHTML = "<a href=" + url + " target='_blank' >" + url + "</a>" //open patch notes url in new tab
+    urlEl.innerHTML = "<a href=" + url + " target='_blank' >" + title + "</a>" //open patch notes url in new tab
 
     containerEl.append(titleEl);
     containerEl.append(urlEl); // not the final version of how url will be added
