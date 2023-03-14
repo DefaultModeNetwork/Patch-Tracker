@@ -2,8 +2,6 @@ const steamAPIUrl = "https://api.steampowered.com/ISteamNews/GetNewsForApp/v2/";
 const steamAppIDTerm = "?appid=";
 const steamAPITagTerm = "&tags=patchnotes";
 const apiFix = "https://proxy.cors.sh/"
-const testGame = "Last Epoch" // Last Epoch App ID: 899770, current patch: 0.8.5
-const testIds = ["appid: 899770, name: Last Epoch", "appid: 238960, name: Path of Exile", "appid: 1245620, name: Elden Ring"]
 
 const contentEl = document.querySelector("#content");
 var inputEl = document.querySelector("#user-input");
