@@ -36,6 +36,6 @@ console.log(title,url)
 var testContent = "random"
 var testTitle= "random"
 var testUrl = "random3"
-renderGameInfo(testContent,test)
+renderGameInfo()
 // callAppIdApi();
 callSteamNewsAPI();
