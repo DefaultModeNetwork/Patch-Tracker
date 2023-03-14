@@ -4,15 +4,14 @@ const steamAPITagTerm = "&tags=patchnotes";
 const apiFix = "https://proxy.cors.sh/"
 
 const contentEl = document.querySelector("#content");
-var inputEl = document.querySelector("#user-input");
+var inputEl = document.querySelector("#game-name");
 
 console.log(gameKeys)
 
 async function callSteamNewsAPI(inputAppid) {
-    const video = await callYoutubeAPI()
+    let video = await callYoutubeAPI()
     console.log(video)
-    fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
-        // let result = await fetch(testUrl)
+    let result = await fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
         .then(function (response) {
             return response.json();
         })
@@ -23,17 +22,17 @@ async function callSteamNewsAPI(inputAppid) {
         })
 }
 
-const renderVideo = (json) => {
+    const renderVideo = (json) => {
     const items = json.items[0]
     const videoId = items.id.videoId || items.id.channelId || ''
-  console.log(json,videoId,items)
-   return `<iframe width="280" height="160" src="https://www.youtube.com/embed/${videoId}?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
-  clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
-    
-//   const wrapper = document.getElementById('youtube-wrapper')
-//   wrapper.innerHTML = frame  
-}
-  
+    console.log(json,videoId,items)
+    return `<iframe width="280" height="160" src="https://www.youtube.com/embed/${videoId}?controls=0" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; 
+    clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>`
+
+    //   const wrapper = document.getElementById('youtube-wrapper')
+    //   wrapper.innerHTML = frame  
+    }
+
 /* Waiting for Youtube API */
 async function callYoutubeAPI() {
     var gameName = document.getElementById("game-name").value
@@ -70,7 +69,6 @@ function renderGameInfo(title, contents, url, video) {
     containerEl.append(titleEl);
     containerEl.append(urlEl); // not the final version of how url will be added
   
-    
     containerEl.append(patchEl); //here is where we add to the container, all the components
     var frameEl = document.createElement("div")
     frameEl.className = "frame-wrapper"
@@ -126,7 +124,6 @@ function loadFromStorage() {
 
 function userSearch(event) {
     event.preventDefault();
-    console.log("prove this works")
     callSteamNewsAPI(getAppid(inputEl.value));
     callYoutubeAPI()
 }
