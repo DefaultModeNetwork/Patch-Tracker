@@ -113,3 +113,22 @@ function userSearch(event) {
 
 // loadFromStorage() uncomment this when localStorage is set up
 inputEl.addEventListener("submit", userSearch)
+const toggleBtn = document.querySelector('.toggle-btn');
+const body = document.querySelector('body');
+let isBackgroundGif = false;
+
+toggleBtn.addEventListener('click', function() {
+  if (isBackgroundGif) {
+    body.style.backgroundImage = "url('https://images-wixmp-ed30a86b8c4ca887773594c2.wixmp.com/f/24b2d5f4-4824-467a-b16e-e564be3b7d95/ddoos9w-0e0b8c9c-293f-4449-9195-fbb1edd2609d.jpg?token=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1cm46YXBwOjdlMGQxODg5ODIyNjQzNzNhNWYwZDQxNWVhMGQyNmUwIiwiaXNzIjoidXJuOmFwcDo3ZTBkMTg4OTgyMjY0MzczYTVmMGQ0MTVlYTBkMjZlMCIsIm9iaiI6W1t7InBhdGgiOiJcL2ZcLzI0YjJkNWY0LTQ4MjQtNDY3YS1iMTZlLWU1NjRiZTNiN2Q5NVwvZGRvb3M5dy0wZTBiOGM5Yy0yOTNmLTQ0NDktOTE5NS1mYmIxZWRkMjYwOWQuanBnIn1dXSwiYXVkIjpbInVybjpzZXJ2aWNlOmZpbGUuZG93bmxvYWQiXX0.bituyBJBE319jxEB8gFfZ9SnNlfXl3Qo0PxFubCrC6o')";
+    body.style.backgroundSize = 'cover';
+    body.style.backgroundPosition = 'center';
+    body.style.color = 'black';
+    isBackgroundGif = false;
+  } else {
+    body.style.backgroundImage = "url('https://thumbs.gfycat.com/ZanyGrimGodwit-max-1mb.gif')";
+    body.style.backgroundSize = 'cover';
+    body.style.backgroundPosition = 'center';
+    body.style.color = 'white';
+    isBackgroundGif = true;
+  }
+});
