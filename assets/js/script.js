@@ -8,9 +8,10 @@ const testIds = ["appid: 899770, name: Last Epoch", "appid: 238960, name: Path o
 const contentEl = document.querySelector("#content");
 var inputEl = document.querySelector("#user-input");
 
+console.log(gameKeys)
+
 async function callSteamNewsAPI(inputAppid) {
     let result = await fetch(apiFix + steamAPIUrl + steamAppIDTerm + inputAppid + steamAPITagTerm)
-        // let result = await fetch(testUrl)
         .then(function (response) {
             return response.json();
         })
@@ -53,11 +54,37 @@ function renderGameInfo(title, contents, url, getYoutubeVideo) {
     console.log(title,url)
 }
 
+function binarySearch(target, start, middle, end) {
+    var x = start;
+    var y = middle;
+    var z = end;
+    console.log(x,y,z)
+    if (y == 0) {
+        console.log(gameKeys[z].name);
+        return
+    }
+    if ( target.localeCompare(gameKeys[middle].name) == 0 ) {
+        return gameKeys[middle].appid;
+    } else if ( target.localeCompare(gameKeys[middle].name) < 0 ) { //traverse left
+        //target is target, start is start, middle is now end, middle is now middle / 2
+        console.log("Lesser, traverse left.")
+        binarySearch(target, start, middle, Math.floor(middle / 2));
+    } else if ( target.localeCompare(gameKeys[middle].name) > 0 ) { //traverse right
+        //target is target, start is middle, end is end, middle is now end / 2
+        console.log("Greater, traverse right.")
+        binarySearch(target, middle, end, Math.floor(end / 2));
+    } else if ( (middle - start) == 0 || (end - middle) == 0 || middle == 0) { //exit condition returns first closest result.
+        return gameKeys[start].appid;
+    } else {
+        console.log("Nothing found");
+    }
+}
+
 function getAppid(userInput) {
     //TODO: add code that finds appid from list.
-    var appid = "";
-    appid = "899770"
-    return appid;
+    // var appid = "";
+    // appid = "899770"
+    return binarySearch(userInput, 0, (gameKeys.length - 1), Math.floor(gameKeys.length / 2));
 }
 
 function storeAppid(gameName, gameAppid) {
