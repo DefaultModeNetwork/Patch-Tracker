@@ -4,7 +4,8 @@ const steamAPITagTerm = "&tags=patchnotes";
 const apiFix = "https://proxy.cors.sh/"
 
 const contentEl = document.querySelector("#content");
-var inputEl = document.querySelector("#game-name");
+var inputEl = document.querySelector("#user-input");
+var gameName = document.getElementById("game-name").value
 
 console.log(gameKeys)
 
@@ -104,8 +105,8 @@ function binarySearch(target, start, end) {
 }
 
 
-function getAppid(userInput) {
-    var userString = userInput.replace(/ /g,"");
+async function getAppid(userInput) {
+    let userString = await userInput.replace(/ /g,"");
     userString = userString.toLowerCase();
     console.log(userString)
     let result = binarySearch(userString, 0, (gameKeys.length - 1))
@@ -124,7 +125,9 @@ function loadFromStorage() {
 
 function userSearch(event) {
     event.preventDefault();
-    callSteamNewsAPI(getAppid(inputEl.value));
+    // console.log(inputEl.value)
+    let id = getAppid(inputEl.value)
+    callSteamNewsAPI(id);
     callYoutubeAPI()
 }
 
