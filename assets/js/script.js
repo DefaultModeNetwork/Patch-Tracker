@@ -113,6 +113,3 @@ function userSearch(event) {
 
 // loadFromStorage() uncomment this when localStorage is set up
 inputEl.addEventListener("submit", userSearch)
-
-
-
