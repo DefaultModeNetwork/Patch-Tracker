@@ -54,50 +54,16 @@ function renderGameInfo(title, contents, url, getYoutubeVideo) {
     console.log(title,url)
 }
 
-// function binarySearch(target, start, middle, end) {
-//     var x = start;
-//     var y = end;
-//     var z = Math.floor((end+start)/2);
-//     console.log("start:",x,"end:",y,"middle:",z)
-//     tempTarget = target.toUpperCase();
-//     console.log(target)
-//     console.log(gameKeys[middle].name.toUpperCase())
-//     if (x ==  y || y == z || x == z) {
-//         console.log(gameKeys[z].name);
-//         return
-//     }
-//     if ( tempTarget.localeCompare(gameKeys[middle].name.toUpperCase()) == 0 ) {
-//         return gameKeys[middle].appid;
-//     } else if ( tempTarget.localeCompare(gameKeys[middle].name.toUpperCase()) < 0 ) { //traverse left
-//         //target is target, start is start, middle is now end, middle is now middle / 2
-//         console.log("Lesser, traverse left.")
-//         binarySearch(target, start, middle, Math.floor((start + end) / 2));
-//     } else if ( tempTarget.localeCompare(gameKeys[middle].name.toUpperCase()) > 0 ) { //traverse right
-//         //target is target, start is middle, end is end, middle is now end / 2
-//         console.log("Greater, traverse right.")
-//         binarySearch(target, middle, end, Math.floor((middle + end) / 2));
-//     } else if ( (middle - start) == 0 || (end - middle) == 0 || middle == 0) { //exit condition returns first closest result.
-//         return gameKeys[start].appid;
-//     } else {
-//         console.log("Nothing found");
-//     }
-// }
-
 function binarySearch(target, start, end) {
     let mid = (Math.ceil((start + end) / 2))
-    // let userString = target.toUpperCase();
-    // let gameString = gameKeys[mid].name.toUpperCase();
     let userString = target;
     let gameString = gameKeys[mid].name;
     console.log("start:",start,"end:",end,"middle:",mid)
     console.log(gameKeys[mid])
     
     if ( mid - start == 0 || end - mid == 0) { // base case
-        // console.log("We're in 94", gameKeys[mid]);
-        // console.log(mid);
         return gameKeys[mid];
     } else if ( userString.localeCompare(gameString) === 0 ) {
-        // console.log(gameKeys[mid])
         return gameKeys[mid];
     } else if ( userString.localeCompare(gameString) < 0 ) { //traverse left
         //target is target, start is start, middle is now end
@@ -106,7 +72,6 @@ function binarySearch(target, start, end) {
         //target is target, start is middle, end is end
         return binarySearch(target, mid, end);
     } else if ( (mid - start) == 0 || (end - mid) == 0 || mid == 0) { //exit condition returns first closest result.
-        // console.log("We're here", gameKeys[mid]);
         return gameKeys[mid];
     } else {
         console.log("Nothing found");
@@ -118,14 +83,8 @@ function getAppid(userInput) {
     var userString = userInput.replace(/ /g,"");
     userString = userString.toLowerCase();
     console.log(userString)
-    //TODO: add code that finds appid from list.
-    // var appid = "";
-    // appid = "899770"
-    // return binarySearch(userInput, 0, (gameKeys.length - 1), Math.floor(gameKeys.length / 2));
-    // return binarySearch(userInput, 0, Math.floor(gameKeys.length / 2), (gameKeys.length - 1))
     let result = binarySearch(userString, 0, (gameKeys.length - 1))
-    // return binarySearch(userInput, 0, (gameKeys.length - 1))
-    // console.log(result)
+    return result.appid;
 }
 
 function storeAppid(gameName, gameAppid) {
@@ -140,8 +99,9 @@ function loadFromStorage() {
 
 function userSearch(event) {
     event.preventDefault();
-    console.log("prove this works")
-    callSteamNewsAPI(getAppid(inputEl.value));
+    let result = getAppid(inputEl.value);
+    console.log(inputEl.value)
+    callSteamNewsAPI(result);
 }
 
 // loadFromStorage() uncomment this when localStorage is set up
