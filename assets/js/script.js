@@ -48,7 +48,7 @@ async function callYoutubeAPI(storedName) {
         gameName = document.getElementById("game-name").value
     }
     console.log(gameName)
-    const key = 'AIzaSyAmO9sPEWE8zPmAhHWJJ8rIa1gJgVti6mM'
+    const key = 'AIzaSyBggTRA9mH569Xhv3VxXGS6H1B09sPlhPc'
 	const url = 'https://youtube.googleapis.com/youtube/v3/search?part=snippet&maxResults=1&'
     
     return await fetch(`${url}q=${gameName}&key=${key}`).then((res) => res.json()).then(json => renderVideo(json)) //only calls video if fetch works
